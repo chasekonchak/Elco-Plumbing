@@ -9,21 +9,24 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          bg: '#0F1117',
-          surface: '#181C27',
-          card: '#1E2330',
-          border: '#2A3040',
+          bg: '#070810',
+          surface: '#0C0D18',
+          card: '#10121F',
+          border: '#1A1E30',
           amber: '#F59E0B',
           'amber-light': '#FCD34D',
           'amber-dark': '#D97706',
-          slate: '#94A3B8',
-          muted: '#4B5563',
-          white: '#F8FAFC',
+          slate: '#8B9FC7',
+          muted: '#3D4B66',
+          white: '#EEF2FF',
         },
       },
       fontFamily: {
         display: ['var(--font-display)', 'sans-serif'],
         body: ['var(--font-body)', 'sans-serif'],
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
     },
   },

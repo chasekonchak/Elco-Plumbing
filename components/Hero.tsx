@@ -4,12 +4,18 @@ import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import { Phone, ArrowRight } from 'lucide-react'
+import { Phone, ArrowRight, CheckCircle } from 'lucide-react'
 
 const headlineLines = [
   { text: 'WHEN YOUR', color: 'text-brand-white' },
   { text: 'PIPES FAIL,', color: 'text-brand-white' },
-  { text: "WE DON'T.", color: 'text-brand-amber' },
+  { text: "WE DON'T.", gradient: true },
+]
+
+const trustItems = [
+  { icon: CheckCircle, label: 'Licensed & Insured' },
+  { icon: CheckCircle, label: '4.9★ · 247 Reviews' },
+  { icon: CheckCircle, label: 'Same-Day Available' },
 ]
 
 export default function Hero() {
@@ -21,14 +27,15 @@ export default function Hero() {
       const lines = linesRef.current.filter(Boolean)
       gsap.fromTo(
         lines,
-        { y: 80, opacity: 0 },
+        { y: 90, opacity: 0, skewY: 2 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.9,
+          skewY: 0,
+          duration: 1,
           stagger: 0.15,
-          ease: 'power3.out',
-          delay: 0.2,
+          ease: 'power4.out',
+          delay: 0.3,
         }
       )
     },
@@ -40,42 +47,60 @@ export default function Hero() {
       ref={sectionRef}
       className="relative min-h-screen bg-brand-bg overflow-hidden"
     >
-      {/* Right accent block — desktop only */}
-      <div className="hidden lg:flex absolute right-0 top-0 h-full w-[28%] bg-brand-surface border-l border-brand-border flex-col items-center justify-center gap-0 pointer-events-none select-none">
-        <span
-          className="font-display leading-none text-brand-amber"
-          style={{ fontSize: '8rem', opacity: 0.18 }}
-        >
-          24
-        </span>
-        <span className="text-2xl text-brand-muted -mt-2">/7</span>
-        <span className="text-[10px] tracking-[0.4em] text-brand-muted uppercase mt-3">
-          Emergency
-        </span>
+      {/* Ambient background blobs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="blob-1 absolute -top-32 right-[8%] w-[700px] h-[700px] rounded-full bg-brand-amber/[0.08] blur-[130px]" />
+        <div className="blob-2 absolute top-[40%] -left-20 w-[500px] h-[500px] rounded-full bg-indigo-500/[0.05] blur-[110px]" />
+        <div className="blob-3 absolute bottom-0 right-[25%] w-[300px] h-[300px] rounded-full bg-brand-amber/[0.05] blur-[90px]" />
+        <div className="absolute inset-0 dot-grid opacity-40" />
+      </div>
+
+      {/* Right accent panel — desktop only */}
+      <div
+        className="hidden lg:flex absolute right-0 top-0 h-full w-[26%] flex-col items-center justify-center gap-0 pointer-events-none select-none"
+        style={{
+          background: 'linear-gradient(to left, rgba(7,8,16,0.9) 0%, rgba(7,8,16,0.3) 100%)',
+          backdropFilter: 'blur(2px)',
+          borderLeft: '1px solid rgba(255,255,255,0.05)',
+        }}
+      >
+        <div className="flex flex-col items-center">
+          <span
+            className="font-display leading-none text-brand-amber"
+            style={{ fontSize: '9rem', opacity: 0.12 }}
+          >
+            24
+          </span>
+          <span className="text-xl text-brand-muted font-body -mt-3">/7</span>
+          <span className="text-[9px] tracking-[0.5em] text-brand-muted uppercase mt-4 font-body font-semibold">
+            Emergency
+          </span>
+        </div>
       </div>
 
       {/* Top label */}
-      <div className="absolute top-32 left-6 max-w-7xl">
-        <span className="text-[11px] font-semibold tracking-[0.4em] uppercase text-brand-amber font-body">
-          MARIETTA, GA · COBB COUNTY · 50-MILE RADIUS
-        </span>
+      <div className="absolute top-28 left-6 right-0 max-w-7xl mx-auto px-0 lg:px-6">
+        <motion.span
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="inline-flex items-center gap-2 glass px-4 py-1.5 rounded-full text-[10px] font-semibold tracking-[0.35em] uppercase text-brand-amber font-body"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-brand-amber animate-pulse" />
+          Marietta, GA · Cobb County · 50-Mile Radius
+        </motion.span>
       </div>
 
-      {/* Main content — pushed to bottom */}
-      <div className="flex flex-col justify-end min-h-screen pb-20 max-w-7xl mx-auto px-6">
+      {/* Main content */}
+      <div className="flex flex-col justify-end min-h-screen pb-16 lg:pb-20 max-w-7xl mx-auto px-6">
         {/* Headline */}
-        <div>
-          {headlineLines.map(({ text, color }, i) => (
+        <div className="overflow-hidden">
+          {headlineLines.map(({ text, color, gradient }, i) => (
             <div
               key={i}
-              ref={(el) => {
-                linesRef.current[i] = el
-              }}
-              className={`font-display ${color} leading-none`}
-              style={{
-                fontSize: 'clamp(4rem, 10vw, 9rem)',
-                opacity: 0,
-              }}
+              ref={(el) => { linesRef.current[i] = el }}
+              className={`font-display leading-[0.92] ${color ?? ''} ${gradient ? 'text-gradient-amber text-glow-amber' : ''}`}
+              style={{ fontSize: 'clamp(3.5rem, 9.5vw, 8.5rem)', opacity: 0 }}
             >
               {text}
             </div>
@@ -83,10 +108,15 @@ export default function Hero() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-brand-border mt-8 mb-8" />
+        <div className="mt-10 mb-8 h-px bg-gradient-to-r from-brand-amber/30 via-white/10 to-transparent" />
 
         {/* Info row */}
-        <div className="flex justify-between flex-wrap gap-6 items-start">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.85 }}
+          className="flex justify-between flex-wrap gap-8 items-start"
+        >
           <p className="max-w-md text-brand-slate text-base leading-relaxed font-body">
             Licensed, bonded, and insured plumbers for emergency repairs, drain
             cleaning, and water restoration across Cobb County. Same-day service
@@ -96,8 +126,11 @@ export default function Hero() {
           <div className="flex flex-col sm:flex-row gap-3">
             <motion.a
               href="tel:6787721218"
-              className="flex items-center gap-2 bg-brand-amber text-brand-bg font-bold px-8 py-4 rounded-sm text-base select-none font-body"
-              whileHover={{ scale: 1.03, filter: 'brightness(1.1)' }}
+              className="inline-flex items-center gap-2.5 bg-brand-amber text-brand-bg font-bold px-8 py-4 rounded-full text-base select-none font-body"
+              whileHover={{
+                scale: 1.04,
+                boxShadow: '0 0 30px rgba(245,158,11,0.55), 0 0 60px rgba(245,158,11,0.2)',
+              }}
               whileTap={{ scale: 0.97 }}
             >
               <Phone size={16} strokeWidth={2.5} />
@@ -106,31 +139,38 @@ export default function Hero() {
 
             <motion.a
               href="#quote"
-              className="flex items-center gap-2 border border-brand-border text-brand-white px-8 py-4 rounded-sm text-base select-none font-body hover:border-brand-amber transition-colors duration-200"
-              whileHover={{ scale: 1.03 }}
+              className="inline-flex items-center gap-2.5 glass text-brand-white px-8 py-4 rounded-full text-base select-none font-body hover:border-brand-amber/30 transition-all duration-300"
+              whileHover={{
+                scale: 1.03,
+                boxShadow: '0 0 0 1px rgba(245,158,11,0.35)',
+              }}
               whileTap={{ scale: 0.97 }}
             >
               Free Quote
               <ArrowRight size={16} />
             </motion.a>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Trust row */}
-        <div className="mt-8 flex gap-8 flex-wrap">
-          {[
-            '✓ Licensed & Insured',
-            '✓ 4.9★ Rating · 247 Reviews',
-            '✓ Same-Day Available',
-          ].map((item) => (
-            <span
-              key={item}
-              className="text-xs tracking-widest uppercase text-brand-muted font-body font-semibold"
+        {/* Trust chips */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 1.1 }}
+          className="mt-8 flex gap-3 flex-wrap"
+        >
+          {trustItems.map(({ label }) => (
+            <div
+              key={label}
+              className="glass px-4 py-2 rounded-full flex items-center gap-2"
             >
-              {item}
-            </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-amber" />
+              <span className="text-xs font-body font-medium text-brand-slate tracking-wide">
+                {label}
+              </span>
+            </div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

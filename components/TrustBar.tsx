@@ -1,3 +1,6 @@
+'use client'
+
+import { motion } from 'framer-motion'
 import { Shield, Star, Zap, Tag } from 'lucide-react'
 
 const items = [
@@ -7,24 +10,52 @@ const items = [
   { icon: Tag, stat: 'Free Estimates', sub: 'No hidden fees' },
 ]
 
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12 } },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: 'easeOut' } },
+}
+
 export default function TrustBar() {
   return (
-    <section className="bg-brand-surface border-y border-brand-border py-10">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-brand-border">
+    <section className="relative bg-brand-surface border-y border-white/[0.06] py-12 overflow-hidden">
+      {/* Ambient */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[400px] h-[200px] rounded-full bg-brand-amber/[0.04] blur-[80px]" />
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-6">
+        <motion.div
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
           {items.map(({ icon: Icon, stat, sub }) => (
-            <div
+            <motion.div
               key={stat}
-              className="bg-brand-surface px-8 py-6 flex flex-col gap-1"
+              variants={itemVariants}
+              whileHover={{
+                boxShadow: '0 0 0 1px rgba(245,158,11,0.25), 0 0 20px rgba(245,158,11,0.08)',
+                y: -2,
+              }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              className="glass rounded-2xl px-6 py-6 flex flex-col gap-2 cursor-default"
             >
-              <Icon size={20} className="text-brand-amber mb-1" strokeWidth={1.75} />
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-1"
+                   style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)' }}>
+                <Icon size={18} className="text-brand-amber" strokeWidth={1.75} />
+              </div>
               <p className="text-brand-white font-semibold text-sm font-body">{stat}</p>
-              <p className="text-brand-muted text-xs tracking-wide uppercase font-body">
-                {sub}
-              </p>
-            </div>
+              <p className="text-brand-muted text-xs tracking-wide uppercase font-body">{sub}</p>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

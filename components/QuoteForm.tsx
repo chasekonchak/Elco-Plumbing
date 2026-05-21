@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Check } from 'lucide-react'
+import { Check, ArrowRight } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const services = [
+const serviceOptions = [
   'Emergency Repair',
   'Drain Cleaning',
   'Water Heater',
@@ -27,30 +27,146 @@ type FormState = {
   message: string
 }
 
-const BORDER_DEFAULT = '#2A3040'
-const BORDER_FOCUS = '#F59E0B'
-
-const inputBase =
-  'bg-brand-bg text-brand-white placeholder:text-brand-muted px-4 py-3 rounded-sm w-full text-sm font-body outline-none'
-
 function FieldLabel({ children }: { children: string }) {
   return (
-    <p className="text-xs tracking-widest uppercase text-brand-muted mb-2 font-body font-semibold">
+    <p className="text-[10px] tracking-[0.3em] uppercase text-brand-muted mb-2 font-body font-semibold">
       {children}
     </p>
   )
 }
 
+function FormField({
+  label,
+  children,
+  delay,
+}: {
+  label: string
+  children: React.ReactNode
+  delay: number
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.45, ease: 'easeOut', delay }}
+    >
+      <FieldLabel>{label}</FieldLabel>
+      {children}
+    </motion.div>
+  )
+}
+
+const inputStyle: React.CSSProperties = {
+  background: 'rgba(7,8,16,0.8)',
+  border: '1px solid rgba(255,255,255,0.08)',
+  color: '#EEF2FF',
+  borderRadius: '0.75rem',
+  width: '100%',
+  padding: '0.75rem 1rem',
+  fontSize: '0.875rem',
+  fontFamily: 'var(--font-body)',
+  outline: 'none',
+  transition: 'border-color 0.2s, box-shadow 0.2s',
+}
+
+const FOCUS_STYLE = {
+  borderColor: 'rgba(245,158,11,0.6)',
+  boxShadow: '0 0 0 3px rgba(245,158,11,0.1)',
+}
+
+type InputProps = {
+  type?: string
+  name: string
+  placeholder?: string
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
+function GlassInput({ type = 'text', name, placeholder, value, onChange }: InputProps) {
+  const [focused, setFocused] = useState(false)
+  return (
+    <input
+      type={type}
+      name={name}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      style={{
+        ...inputStyle,
+        ...(focused ? FOCUS_STYLE : {}),
+        caretColor: '#F59E0B',
+      }}
+    />
+  )
+}
+
+type SelectProps = {
+  name: string
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
+  options: string[]
+}
+function GlassSelect({ name, value, onChange, options }: SelectProps) {
+  const [focused, setFocused] = useState(false)
+  return (
+    <select
+      name={name}
+      value={value}
+      onChange={onChange}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      style={{
+        ...inputStyle,
+        cursor: 'pointer',
+        ...(focused ? FOCUS_STYLE : {}),
+      }}
+    >
+      <option value="" style={{ background: '#0C0D18' }}>
+        Select a service…
+      </option>
+      {options.map((o) => (
+        <option key={o} value={o} style={{ background: '#0C0D18' }}>
+          {o}
+        </option>
+      ))}
+    </select>
+  )
+}
+
+type TextareaProps = {
+  name: string
+  placeholder?: string
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+}
+function GlassTextarea({ name, placeholder, value, onChange }: TextareaProps) {
+  const [focused, setFocused] = useState(false)
+  return (
+    <textarea
+      name={name}
+      rows={4}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      style={{
+        ...inputStyle,
+        resize: 'none',
+        caretColor: '#F59E0B',
+        ...(focused ? FOCUS_STYLE : {}),
+      }}
+    />
+  )
+}
+
 export default function QuoteForm() {
   const [form, setForm] = useState<FormState>({
-    name: '',
-    phone: '',
-    email: '',
-    service: '',
-    message: '',
+    name: '', phone: '', email: '', service: '', message: '',
   })
   const [submitted, setSubmitted] = useState(false)
-
   const sectionRef = useRef<HTMLElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
 
@@ -62,13 +178,9 @@ export default function QuoteForm() {
           { clipPath: 'inset(0 100% 0 0)' },
           {
             clipPath: 'inset(0 0% 0 0)',
-            duration: 0.8,
+            duration: 0.9,
             ease: 'power3.out',
-            scrollTrigger: {
-              trigger: headingRef.current,
-              start: 'top 85%',
-              once: true,
-            },
+            scrollTrigger: { trigger: headingRef.current, start: 'top 85%', once: true },
           }
         )
       }
@@ -78,9 +190,7 @@ export default function QuoteForm() {
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-  }
+  ) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
 
   const handleSubmit = () => {
     if (!form.name || !form.phone) return
@@ -91,15 +201,28 @@ export default function QuoteForm() {
     <section
       id="quote"
       ref={sectionRef}
-      className="bg-brand-surface border-t border-brand-border py-16 lg:py-28"
+      className="relative bg-brand-bg py-16 lg:py-28 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+      {/* Ambient */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="blob-1 absolute -bottom-20 right-[10%] w-[500px] h-[500px] rounded-full bg-brand-amber/[0.06] blur-[120px]" />
+        <div className="absolute inset-0 dot-grid opacity-20" />
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-start">
           {/* Left */}
           <div>
-            <p className="text-[11px] tracking-[0.4em] uppercase text-brand-amber font-semibold font-body mb-4">
-              Free Quote
-            </p>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+              className="text-[11px] tracking-[0.4em] uppercase text-brand-amber font-semibold font-body mb-4"
+            >
+              Get a Quote
+            </motion.p>
+
             <h2
               ref={headingRef}
               className="font-display text-brand-white"
@@ -107,180 +230,112 @@ export default function QuoteForm() {
             >
               GET A FREE QUOTE
             </h2>
+
             <p className="text-brand-slate mt-4 max-w-sm text-base font-body leading-relaxed">
-              Describe your issue. We respond within minutes — no spam, no
-              obligation.
+              Describe your issue. A real plumber responds within minutes — no bots, no run-around.
             </p>
 
             <div className="mt-8 flex flex-col gap-3">
               {['→ No spam, ever', '→ Response within minutes', '→ Free, no obligation'].map(
                 (item) => (
-                  <p key={item} className="text-sm text-brand-slate font-body">
-                    {item}
-                  </p>
+                  <p key={item} className="text-sm text-brand-slate font-body">{item}</p>
                 )
               )}
             </div>
 
-            <p className="font-display text-brand-amber mt-10" style={{ fontSize: '2rem' }}>
-              678.772.1218
-            </p>
-            <p className="text-xs text-brand-muted font-body mt-1">or call us directly</p>
+            <div className="mt-10">
+              <a
+                href="tel:6787721218"
+                className="font-display text-brand-amber text-glow-amber hover:text-brand-amber-light transition-colors"
+                style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)' }}
+              >
+                678.772.1218
+              </a>
+              <p className="text-xs text-brand-muted font-body mt-1">or call us directly</p>
+            </div>
           </div>
 
-          {/* Right — form card */}
+          {/* Right — glass form card */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="bg-brand-card border border-brand-border p-10"
+            transition={{ duration: 0.65, ease: 'easeOut' }}
+            className="glass rounded-3xl p-8 lg:p-10 relative overflow-hidden"
           >
+            {/* Card top shimmer */}
+            <div
+              className="absolute inset-x-0 top-0 h-px"
+              style={{ background: 'linear-gradient(to right, transparent, rgba(245,158,11,0.4), transparent)' }}
+            />
+            {/* Card ambient */}
+            <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-brand-amber/[0.08] blur-[50px] pointer-events-none" />
+
             <AnimatePresence mode="wait">
               {submitted ? (
                 <motion.div
                   key="success"
                   initial={{ opacity: 0, scale: 0.85 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4, type: 'spring', stiffness: 260, damping: 20 }}
-                  className="flex flex-col items-center justify-center py-12 gap-4 text-center"
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4, type: 'spring', stiffness: 240, damping: 20 }}
+                  className="relative flex flex-col items-center justify-center py-16 gap-5 text-center"
                 >
-                  <Check size={48} className="text-brand-amber" strokeWidth={1.5} />
-                  <h3 className="font-display text-3xl text-brand-white">
-                    REQUEST RECEIVED
-                  </h3>
-                  <p className="text-brand-slate font-body text-sm">
-                    {"We'll call you within minutes."}
-                  </p>
+                  <div
+                    className="w-20 h-20 rounded-full flex items-center justify-center"
+                    style={{
+                      background: 'rgba(245,158,11,0.12)',
+                      border: '1px solid rgba(245,158,11,0.3)',
+                      boxShadow: '0 0 40px rgba(245,158,11,0.2)',
+                    }}
+                  >
+                    <Check size={36} className="text-brand-amber" strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-3xl text-brand-white">REQUEST RECEIVED</h3>
+                    <p className="text-brand-slate font-body text-sm mt-2">
+                      {"We'll call you within minutes."}
+                    </p>
+                  </div>
                 </motion.div>
               ) : (
                 <motion.div
                   key="form"
                   initial={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="flex flex-col gap-5"
+                  className="relative flex flex-col gap-5"
                 >
-                  {/* Name */}
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.05 }}
-                  >
-                    <FieldLabel>Name</FieldLabel>
-                    <motion.input
-                      type="text"
-                      name="name"
-                      placeholder="Jane Smith"
-                      value={form.name}
-                      onChange={handleChange}
-                      className={inputBase}
-                      style={{ border: `1px solid ${BORDER_DEFAULT}` }}
-                      whileFocus={{ borderColor: BORDER_FOCUS }}
-                      transition={{ duration: 0.15 }}
-                    />
-                  </motion.div>
+                  <FormField label="Name" delay={0.05}>
+                    <GlassInput name="name" placeholder="Jane Smith" value={form.name} onChange={handleChange} />
+                  </FormField>
 
-                  {/* Phone */}
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.1 }}
-                  >
-                    <FieldLabel>Phone</FieldLabel>
-                    <motion.input
-                      type="tel"
-                      name="phone"
-                      placeholder="(678) 555-1234"
-                      value={form.phone}
-                      onChange={handleChange}
-                      className={inputBase}
-                      style={{ border: `1px solid ${BORDER_DEFAULT}` }}
-                      whileFocus={{ borderColor: BORDER_FOCUS }}
-                      transition={{ duration: 0.15 }}
-                    />
-                  </motion.div>
+                  <FormField label="Phone" delay={0.1}>
+                    <GlassInput type="tel" name="phone" placeholder="(678) 555-1234" value={form.phone} onChange={handleChange} />
+                  </FormField>
 
-                  {/* Email */}
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.15 }}
-                  >
-                    <FieldLabel>Email</FieldLabel>
-                    <motion.input
-                      type="email"
-                      name="email"
-                      placeholder="jane@example.com"
-                      value={form.email}
-                      onChange={handleChange}
-                      className={inputBase}
-                      style={{ border: `1px solid ${BORDER_DEFAULT}` }}
-                      whileFocus={{ borderColor: BORDER_FOCUS }}
-                      transition={{ duration: 0.15 }}
-                    />
-                  </motion.div>
+                  <FormField label="Email" delay={0.15}>
+                    <GlassInput type="email" name="email" placeholder="jane@example.com" value={form.email} onChange={handleChange} />
+                  </FormField>
 
-                  {/* Service */}
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.2 }}
-                  >
-                    <FieldLabel>Service Needed</FieldLabel>
-                    <motion.select
-                      name="service"
-                      value={form.service}
-                      onChange={handleChange}
-                      className={`${inputBase} cursor-pointer`}
-                      style={{
-                        border: `1px solid ${BORDER_DEFAULT}`,
-                        backgroundColor: '#0F1117',
-                      }}
-                      whileFocus={{ borderColor: BORDER_FOCUS }}
-                      transition={{ duration: 0.15 }}
-                    >
-                      <option value="">Select a service…</option>
-                      {services.map((s) => (
-                        <option key={s} value={s}>
-                          {s}
-                        </option>
-                      ))}
-                    </motion.select>
-                  </motion.div>
+                  <FormField label="Service Needed" delay={0.2}>
+                    <GlassSelect name="service" value={form.service} onChange={handleChange} options={serviceOptions} />
+                  </FormField>
 
-                  {/* Message */}
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.25 }}
-                  >
-                    <FieldLabel>Message</FieldLabel>
-                    <motion.textarea
-                      name="message"
-                      rows={4}
-                      placeholder="Describe your plumbing issue…"
-                      value={form.message}
-                      onChange={handleChange}
-                      className={`${inputBase} resize-none`}
-                      style={{ border: `1px solid ${BORDER_DEFAULT}` }}
-                      whileFocus={{ borderColor: BORDER_FOCUS }}
-                      transition={{ duration: 0.15 }}
-                    />
-                  </motion.div>
+                  <FormField label="Message" delay={0.25}>
+                    <GlassTextarea name="message" placeholder="Describe your plumbing issue…" value={form.message} onChange={handleChange} />
+                  </FormField>
 
-                  {/* Submit */}
                   <motion.button
                     onClick={handleSubmit}
-                    className="bg-brand-amber text-brand-bg font-bold w-full py-4 rounded-sm tracking-wider text-sm mt-1 font-body select-none"
-                    whileHover={{ scale: 1.02, filter: 'brightness(1.1)' }}
+                    className="mt-2 w-full bg-brand-amber text-brand-bg font-bold py-4 rounded-full text-sm tracking-wider font-body select-none flex items-center justify-center gap-2"
+                    whileHover={{
+                      scale: 1.02,
+                      boxShadow: '0 0 30px rgba(245,158,11,0.5), 0 0 60px rgba(245,158,11,0.2)',
+                    }}
                     whileTap={{ scale: 0.97 }}
                   >
-                    SEND REQUEST →
+                    SEND REQUEST
+                    <ArrowRight size={15} />
                   </motion.button>
                 </motion.div>
               )}

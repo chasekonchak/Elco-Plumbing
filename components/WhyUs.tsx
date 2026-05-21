@@ -10,10 +10,26 @@ import { Clock, DollarSign, Shield, ThumbsUp, Phone, MapPin } from 'lucide-react
 gsap.registerPlugin(ScrollTrigger)
 
 const features = [
-  { icon: Clock, title: 'Fast Response', desc: 'A licensed plumber at your door within hours.' },
-  { icon: DollarSign, title: 'Upfront Pricing', desc: 'You approve the price before we start.' },
-  { icon: Shield, title: 'Licensed & Insured', desc: 'Fully bonded and certified in Georgia.' },
-  { icon: ThumbsUp, title: 'Satisfaction Guaranteed', desc: "We don't leave until it's right." },
+  {
+    icon: Clock,
+    title: 'We Actually Show Up',
+    desc: "No four-hour windows, no \"the tech is running late.\" We give you a real timeframe and stick to it.",
+  },
+  {
+    icon: DollarSign,
+    title: 'No Surprise Invoices',
+    desc: "We quote you before we start. What we say is what you pay — no add-ons, no \"while we were in there\" charges.",
+  },
+  {
+    icon: Shield,
+    title: 'Licensed & Insured',
+    desc: 'Every tech is licensed, bonded, and insured in Georgia. Your home and your family are protected.',
+  },
+  {
+    icon: ThumbsUp,
+    title: 'We Get It Right',
+    desc: "We've built 15 years of five-star reviews one job at a time. We don't clock out until you're happy.",
+  },
 ]
 
 export default function WhyUs() {
@@ -43,7 +59,6 @@ export default function WhyUs() {
       ref={sectionRef}
       className="relative bg-brand-bg py-16 lg:py-28 overflow-hidden"
     >
-      {/* Ambient */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="blob-2 absolute top-0 left-[20%] w-[500px] h-[500px] rounded-full bg-brand-amber/[0.05] blur-[120px]" />
         <div className="absolute inset-0 dot-grid opacity-25" />
@@ -60,7 +75,7 @@ export default function WhyUs() {
               transition={{ duration: 0.4 }}
               className="text-[11px] tracking-[0.4em] uppercase text-brand-amber font-semibold font-body mb-4"
             >
-              Why ELCO
+              Our Promise to You
             </motion.p>
 
             <h2
@@ -68,8 +83,19 @@ export default function WhyUs() {
               className="font-display text-brand-white"
               style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)' }}
             >
-              WHY MARIETTA CALLS ELCO FIRST
+              WHY MARIETTA KEEPS CALLING US BACK
             </h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="text-brand-slate mt-5 text-base font-body leading-relaxed max-w-md"
+            >
+              We&apos;re not a franchise. We&apos;re your neighbors. The same crew that
+              started this business in 2009 is still the one showing up at your door today.
+            </motion.p>
 
             <div className="mt-10 flex flex-col">
               {features.map(({ icon: Icon, title, desc }, i) => (
@@ -83,10 +109,7 @@ export default function WhyUs() {
                 >
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 transition-all duration-300 group-hover:scale-110"
-                    style={{
-                      background: 'rgba(245,158,11,0.1)',
-                      border: '1px solid rgba(245,158,11,0.2)',
-                    }}
+                    style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)' }}
                   >
                     <Icon size={17} className="text-brand-amber" strokeWidth={1.75} />
                   </div>
@@ -99,7 +122,7 @@ export default function WhyUs() {
             </div>
           </div>
 
-          {/* Right — premium glass contact card */}
+          {/* Right — contact card */}
           <motion.div
             initial={{ opacity: 0, x: 50, y: 20 }}
             whileInView={{ opacity: 1, x: 0, y: 0 }}
@@ -107,11 +130,10 @@ export default function WhyUs() {
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="glass-amber rounded-3xl p-10 relative overflow-hidden"
           >
-            {/* Card ambient glow */}
             <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-brand-amber/[0.12] blur-[60px] pointer-events-none" />
 
             <p className="relative text-xs tracking-[0.3em] uppercase text-brand-amber font-body font-semibold">
-              Reach Us
+              Give Us a Call
             </p>
 
             <a
@@ -121,6 +143,10 @@ export default function WhyUs() {
             >
               678.772.1218
             </a>
+
+            <p className="relative text-brand-slate text-sm mt-3 font-body">
+              A real plumber answers — not a call center.
+            </p>
 
             <div className="relative border-t border-brand-amber/20 my-7" />
 

@@ -16,7 +16,7 @@ const serviceOptions = [
   'Sewer Line',
   'Water Restoration',
   'Leak Detection',
-  'Other',
+  'Other / Not Sure',
 ]
 
 type FormState = {
@@ -35,15 +35,7 @@ function FieldLabel({ children }: { children: string }) {
   )
 }
 
-function FormField({
-  label,
-  children,
-  delay,
-}: {
-  label: string
-  children: React.ReactNode
-  delay: number
-}) {
+function FormField({ label, children, delay }: { label: string; children: React.ReactNode; delay: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -75,97 +67,59 @@ const FOCUS_STYLE = {
   boxShadow: '0 0 0 3px rgba(245,158,11,0.1)',
 }
 
-type InputProps = {
-  type?: string
-  name: string
-  placeholder?: string
-  value: string
+function GlassInput({ type = 'text', name, placeholder, value, onChange }: {
+  type?: string; name: string; placeholder?: string; value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-}
-function GlassInput({ type = 'text', name, placeholder, value, onChange }: InputProps) {
+}) {
   const [focused, setFocused] = useState(false)
   return (
     <input
-      type={type}
-      name={name}
-      placeholder={placeholder}
-      value={value}
+      type={type} name={name} placeholder={placeholder} value={value}
       onChange={onChange}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
-      style={{
-        ...inputStyle,
-        ...(focused ? FOCUS_STYLE : {}),
-        caretColor: '#F59E0B',
-      }}
+      style={{ ...inputStyle, ...(focused ? FOCUS_STYLE : {}), caretColor: '#F59E0B' }}
     />
   )
 }
 
-type SelectProps = {
-  name: string
-  value: string
+function GlassSelect({ name, value, onChange, options }: {
+  name: string; value: string; options: string[];
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
-  options: string[]
-}
-function GlassSelect({ name, value, onChange, options }: SelectProps) {
+}) {
   const [focused, setFocused] = useState(false)
   return (
     <select
-      name={name}
-      value={value}
-      onChange={onChange}
+      name={name} value={value} onChange={onChange}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
-      style={{
-        ...inputStyle,
-        cursor: 'pointer',
-        ...(focused ? FOCUS_STYLE : {}),
-      }}
+      style={{ ...inputStyle, cursor: 'pointer', ...(focused ? FOCUS_STYLE : {}) }}
     >
-      <option value="" style={{ background: '#0C0D18' }}>
-        Select a service…
-      </option>
+      <option value="" style={{ background: '#0C0D18' }}>Select a service…</option>
       {options.map((o) => (
-        <option key={o} value={o} style={{ background: '#0C0D18' }}>
-          {o}
-        </option>
+        <option key={o} value={o} style={{ background: '#0C0D18' }}>{o}</option>
       ))}
     </select>
   )
 }
 
-type TextareaProps = {
-  name: string
-  placeholder?: string
-  value: string
+function GlassTextarea({ name, placeholder, value, onChange }: {
+  name: string; placeholder?: string; value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
-}
-function GlassTextarea({ name, placeholder, value, onChange }: TextareaProps) {
+}) {
   const [focused, setFocused] = useState(false)
   return (
     <textarea
-      name={name}
-      rows={4}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
+      name={name} rows={4} placeholder={placeholder} value={value} onChange={onChange}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
-      style={{
-        ...inputStyle,
-        resize: 'none',
-        caretColor: '#F59E0B',
-        ...(focused ? FOCUS_STYLE : {}),
-      }}
+      style={{ ...inputStyle, resize: 'none', caretColor: '#F59E0B', ...(focused ? FOCUS_STYLE : {}) }}
     />
   )
 }
 
 export default function QuoteForm() {
-  const [form, setForm] = useState<FormState>({
-    name: '', phone: '', email: '', service: '', message: '',
-  })
+  const [form, setForm] = useState<FormState>({ name: '', phone: '', email: '', service: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
@@ -188,9 +142,8 @@ export default function QuoteForm() {
     { scope: sectionRef }
   )
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
 
   const handleSubmit = () => {
     if (!form.name || !form.phone) return
@@ -198,12 +151,7 @@ export default function QuoteForm() {
   }
 
   return (
-    <section
-      id="quote"
-      ref={sectionRef}
-      className="relative bg-brand-bg py-16 lg:py-28 overflow-hidden"
-    >
-      {/* Ambient */}
+    <section id="quote" ref={sectionRef} className="relative bg-brand-bg py-16 lg:py-28 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="blob-1 absolute -bottom-20 right-[10%] w-[500px] h-[500px] rounded-full bg-brand-amber/[0.06] blur-[120px]" />
         <div className="absolute inset-0 dot-grid opacity-20" />
@@ -220,30 +168,33 @@ export default function QuoteForm() {
               transition={{ duration: 0.4 }}
               className="text-[11px] tracking-[0.4em] uppercase text-brand-amber font-semibold font-body mb-4"
             >
-              Get a Quote
+              {"Let's Talk"}
             </motion.p>
 
-            <h2
-              ref={headingRef}
-              className="font-display text-brand-white"
-              style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}
-            >
+            <h2 ref={headingRef} className="font-display text-brand-white" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}>
               GET A FREE QUOTE
             </h2>
 
-            <p className="text-brand-slate mt-4 max-w-sm text-base font-body leading-relaxed">
-              Describe your issue. A real plumber responds within minutes — no bots, no run-around.
+            <p className="text-brand-slate mt-4 text-base font-body leading-relaxed max-w-sm">
+              Fill out the form and a real plumber — not a bot, not a call center — will reach
+              out within minutes. We&apos;ve been doing this in the metro Atlanta area since
+              2009 and we still answer our own phones.
             </p>
 
             <div className="mt-8 flex flex-col gap-3">
-              {['→ No spam, ever', '→ Response within minutes', '→ Free, no obligation'].map(
-                (item) => (
-                  <p key={item} className="text-sm text-brand-slate font-body">{item}</p>
-                )
-              )}
+              {[
+                '→ No spam, ever',
+                '→ A real person responds — usually within minutes',
+                '→ Free estimate, no strings attached',
+              ].map((item) => (
+                <p key={item} className="text-sm text-brand-slate font-body">{item}</p>
+              ))}
             </div>
 
             <div className="mt-10">
+              <p className="text-xs tracking-widest uppercase text-brand-muted font-body mb-2">
+                Or call us directly
+              </p>
               <a
                 href="tel:6787721218"
                 className="font-display text-brand-amber text-glow-amber hover:text-brand-amber-light transition-colors"
@@ -251,7 +202,6 @@ export default function QuoteForm() {
               >
                 678.772.1218
               </a>
-              <p className="text-xs text-brand-muted font-body mt-1">or call us directly</p>
             </div>
           </div>
 
@@ -263,12 +213,10 @@ export default function QuoteForm() {
             transition={{ duration: 0.65, ease: 'easeOut' }}
             className="glass rounded-3xl p-8 lg:p-10 relative overflow-hidden"
           >
-            {/* Card top shimmer */}
             <div
               className="absolute inset-x-0 top-0 h-px"
               style={{ background: 'linear-gradient(to right, transparent, rgba(245,158,11,0.4), transparent)' }}
             />
-            {/* Card ambient */}
             <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-brand-amber/[0.08] blur-[50px] pointer-events-none" />
 
             <AnimatePresence mode="wait">
@@ -292,39 +240,30 @@ export default function QuoteForm() {
                     <Check size={36} className="text-brand-amber" strokeWidth={1.5} />
                   </div>
                   <div>
-                    <h3 className="font-display text-3xl text-brand-white">REQUEST RECEIVED</h3>
-                    <p className="text-brand-slate font-body text-sm mt-2">
-                      {"We'll call you within minutes."}
+                    <h3 className="font-display text-3xl text-brand-white">GOT IT!</h3>
+                    <p className="text-brand-slate font-body text-sm mt-2 max-w-xs">
+                      We&apos;ll reach out shortly — usually within a few minutes during business hours.
+                      For emergencies, call us directly at (678) 772-1218.
                     </p>
                   </div>
                 </motion.div>
               ) : (
-                <motion.div
-                  key="form"
-                  initial={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="relative flex flex-col gap-5"
-                >
-                  <FormField label="Name" delay={0.05}>
+                <motion.div key="form" initial={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative flex flex-col gap-5">
+                  <FormField label="Your Name" delay={0.05}>
                     <GlassInput name="name" placeholder="Jane Smith" value={form.name} onChange={handleChange} />
                   </FormField>
-
-                  <FormField label="Phone" delay={0.1}>
+                  <FormField label="Best Phone Number" delay={0.1}>
                     <GlassInput type="tel" name="phone" placeholder="(678) 555-1234" value={form.phone} onChange={handleChange} />
                   </FormField>
-
-                  <FormField label="Email" delay={0.15}>
+                  <FormField label="Email Address" delay={0.15}>
                     <GlassInput type="email" name="email" placeholder="jane@example.com" value={form.email} onChange={handleChange} />
                   </FormField>
-
-                  <FormField label="Service Needed" delay={0.2}>
+                  <FormField label="What Do You Need Help With?" delay={0.2}>
                     <GlassSelect name="service" value={form.service} onChange={handleChange} options={serviceOptions} />
                   </FormField>
-
-                  <FormField label="Message" delay={0.25}>
-                    <GlassTextarea name="message" placeholder="Describe your plumbing issue…" value={form.message} onChange={handleChange} />
+                  <FormField label="Tell Us More (Optional)" delay={0.25}>
+                    <GlassTextarea name="message" placeholder="What's going on? The more detail the better…" value={form.message} onChange={handleChange} />
                   </FormField>
-
                   <motion.button
                     onClick={handleSubmit}
                     className="mt-2 w-full bg-brand-amber text-brand-bg font-bold py-4 rounded-full text-sm tracking-wider font-body select-none flex items-center justify-center gap-2"
@@ -334,7 +273,7 @@ export default function QuoteForm() {
                     }}
                     whileTap={{ scale: 0.97 }}
                   >
-                    SEND REQUEST
+                    SEND MY REQUEST
                     <ArrowRight size={15} />
                   </motion.button>
                 </motion.div>

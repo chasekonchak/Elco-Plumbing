@@ -9,10 +9,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 const stats = [
-  { value: 15, suffix: '+', label: 'Years Experience' },
-  { value: 247, suffix: '+', label: 'Five-Star Reviews' },
-  { value: 50, suffix: 'mi', label: 'Service Radius' },
-  { value: 24, suffix: '/7', label: 'Emergency Service' },
+  { value: 15, suffix: '+', label: 'Years Fixing ATL Pipes' },
+  { value: 247, suffix: '+', label: 'Happy Families' },
+  { value: 50, suffix: 'mi', label: 'Miles Around Marietta' },
+  { value: 24, suffix: '/7', label: 'Always Answering' },
 ]
 
 export default function StatsBanner() {
@@ -47,16 +47,14 @@ export default function StatsBanner() {
 
   return (
     <section ref={sectionRef} className="relative bg-brand-bg overflow-hidden py-20">
-      {/* Big amber ambient glow across the whole section */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[300px] rounded-full bg-brand-amber/[0.07] blur-[100px]" />
         <div className="absolute inset-0 dot-grid opacity-20" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-6">
-        {/* Section label */}
         <p className="text-center text-[10px] tracking-[0.4em] uppercase text-brand-amber font-body font-semibold mb-12">
-          By The Numbers
+          15 Years in Metro Atlanta
         </p>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -72,20 +70,15 @@ export default function StatsBanner() {
               }}
               className="glass rounded-2xl px-8 py-10 text-center cursor-default relative overflow-hidden"
             >
-              {/* Per-card amber glow blob */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="w-24 h-24 rounded-full bg-brand-amber/[0.12] blur-[40px]" />
               </div>
 
               <p className="relative font-display leading-none text-brand-amber" style={{ fontSize: '4.5rem' }}>
-                <span
-                  ref={(el) => { countersRef.current[i] = el }}
-                >
-                  0
-                </span>
+                <span ref={(el) => { countersRef.current[i] = el }}>0</span>
                 {suffix}
               </p>
-              <p className="relative text-xs tracking-[0.25em] uppercase text-brand-muted mt-3 font-body font-semibold">
+              <p className="relative text-xs tracking-[0.2em] uppercase text-brand-muted mt-3 font-body font-semibold">
                 {label}
               </p>
             </motion.div>

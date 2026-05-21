@@ -13,9 +13,9 @@ const headlineLines = [
 ]
 
 const trustItems = [
-  { icon: CheckCircle, label: 'Licensed & Insured' },
-  { icon: CheckCircle, label: '4.9★ · 247 Reviews' },
-  { icon: CheckCircle, label: 'Same-Day Available' },
+  { icon: CheckCircle, label: 'Family-Owned Since 2009' },
+  { icon: CheckCircle, label: '4.9★ · 247 Real Reviews' },
+  { icon: CheckCircle, label: 'We Answer Our Own Phones' },
 ]
 
 export default function Hero() {
@@ -79,7 +79,7 @@ export default function Hero() {
       </div>
 
       {/* Top label */}
-      <div className="absolute top-28 left-6 right-0 max-w-7xl mx-auto px-0 lg:px-6">
+      <div className="absolute top-28 left-6 right-0 max-w-7xl mx-auto">
         <motion.span
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -87,7 +87,7 @@ export default function Hero() {
           className="inline-flex items-center gap-2 glass px-4 py-1.5 rounded-full text-[10px] font-semibold tracking-[0.35em] uppercase text-brand-amber font-body"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-brand-amber animate-pulse" />
-          Marietta, GA · Cobb County · 50-Mile Radius
+          Marietta, GA · Serving Metro Atlanta Since 2009
         </motion.span>
       </div>
 
@@ -118,9 +118,9 @@ export default function Hero() {
           className="flex justify-between flex-wrap gap-8 items-start"
         >
           <p className="max-w-md text-brand-slate text-base leading-relaxed font-body">
-            Licensed, bonded, and insured plumbers for emergency repairs, drain
-            cleaning, and water restoration across Cobb County. Same-day service
-            available.
+            We&apos;re a family-owned plumbing company that&apos;s been fixing pipes across
+            metro Atlanta since 2009. When your water won&apos;t stop running at 11pm,
+            we&apos;re the ones who actually pick up.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3">
@@ -146,7 +146,7 @@ export default function Hero() {
               }}
               whileTap={{ scale: 0.97 }}
             >
-              Free Quote
+              Get a Free Quote
               <ArrowRight size={16} />
             </motion.a>
           </div>

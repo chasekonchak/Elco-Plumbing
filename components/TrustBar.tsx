@@ -4,10 +4,26 @@ import { motion } from 'framer-motion'
 import { Shield, Star, Zap, Tag } from 'lucide-react'
 
 const items = [
-  { icon: Shield, stat: 'Licensed & Insured', sub: 'Fully bonded in GA' },
-  { icon: Star, stat: '4.9 / 5 Rating', sub: '247+ verified reviews' },
-  { icon: Zap, stat: 'Same-Day Service', sub: 'Call before noon' },
-  { icon: Tag, stat: 'Free Estimates', sub: 'No hidden fees' },
+  {
+    icon: Shield,
+    stat: 'Licensed & Insured',
+    sub: 'Every tech bonded in GA',
+  },
+  {
+    icon: Star,
+    stat: '4.9 / 5 Rating',
+    sub: '247 neighbors reviewed us',
+  },
+  {
+    icon: Zap,
+    stat: 'Same-Day Service',
+    sub: 'Call us — we actually show up',
+  },
+  {
+    icon: Tag,
+    stat: 'Free Estimates',
+    sub: 'No surprises on the invoice',
+  },
 ]
 
 const containerVariants = {
@@ -23,7 +39,6 @@ const itemVariants = {
 export default function TrustBar() {
   return (
     <section className="relative bg-brand-surface border-y border-white/[0.06] py-12 overflow-hidden">
-      {/* Ambient */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[400px] h-[200px] rounded-full bg-brand-amber/[0.04] blur-[80px]" />
       </div>
@@ -47,12 +62,14 @@ export default function TrustBar() {
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               className="glass rounded-2xl px-6 py-6 flex flex-col gap-2 cursor-default"
             >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-1"
-                   style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)' }}>
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center mb-1"
+                style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)' }}
+              >
                 <Icon size={18} className="text-brand-amber" strokeWidth={1.75} />
               </div>
               <p className="text-brand-white font-semibold text-sm font-body">{stat}</p>
-              <p className="text-brand-muted text-xs tracking-wide uppercase font-body">{sub}</p>
+              <p className="text-brand-muted text-xs tracking-wide font-body">{sub}</p>
             </motion.div>
           ))}
         </motion.div>

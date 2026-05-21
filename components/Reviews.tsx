@@ -15,21 +15,21 @@ const reviews = [
     name: 'Jennifer Hollis',
     city: 'Marietta, GA',
     quote:
-      "ELCO had a plumber at my house within two hours. Professional, clear, fixed our burst pipe same afternoon. I wouldn't call anyone else.",
+      "Sunday morning, pipe burst under the kitchen sink. Called ELCO at 8am and they were at my door by 10. Fixed it before noon, price was fair, and they cleaned up after themselves. They've got a customer for life.",
   },
   {
     initials: 'MW',
     name: 'Marcus Webb',
     city: 'Kennesaw, GA',
     quote:
-      'Full water heater replacement. Fair quote, spotless work, cleaned up better than they found it. Five stars without hesitation.',
+      "I'd had three different plumbers look at my water heater over two years. ELCO diagnosed the actual problem in twenty minutes and fixed it right. Should've called them first and saved myself the headache.",
   },
   {
     initials: 'DT',
     name: 'Denise Trammell',
     city: 'Smyrna, GA',
     quote:
-      'Main drain backed up Sunday evening. ELCO picked up immediately, someone out within the hour. Transparent pricing, done right the first time.',
+      "Main drain backed up Thanksgiving evening — worst possible timing. ELCO picked up on the first ring, had someone out within the hour, and cleared it before dinner hit the table. I still can't believe it.",
   },
 ]
 
@@ -67,7 +67,6 @@ export default function Reviews() {
 
   return (
     <section id="reviews" ref={sectionRef} className="relative bg-brand-surface py-16 lg:py-28 overflow-hidden">
-      {/* Ambient */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="blob-3 absolute top-1/2 right-[5%] -translate-y-1/2 w-[450px] h-[450px] rounded-full bg-brand-amber/[0.05] blur-[110px]" />
         <div className="absolute inset-0 dot-grid opacity-20" />
@@ -82,7 +81,7 @@ export default function Reviews() {
             transition={{ duration: 0.4 }}
             className="text-[11px] tracking-[0.4em] uppercase text-brand-amber font-semibold font-body mb-4"
           >
-            Testimonials
+            From Our Neighbors
           </motion.p>
           <h2
             ref={headingRef}
@@ -91,6 +90,16 @@ export default function Reviews() {
           >
             WHAT PEOPLE SAY
           </h2>
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="text-brand-slate mt-4 text-base font-body max-w-md mx-auto leading-relaxed"
+          >
+            We don&apos;t advertise much. Most of our business comes from neighbors
+            recommending us to neighbors — and we think that says everything.
+          </motion.p>
         </div>
 
         <motion.div
@@ -111,13 +120,11 @@ export default function Reviews() {
               transition={{ type: 'spring', stiffness: 280, damping: 24 }}
               className="glass rounded-2xl p-8 flex flex-col gap-5 cursor-default relative overflow-hidden"
             >
-              {/* Subtle top gradient */}
               <div
                 className="absolute inset-x-0 top-0 h-px"
                 style={{ background: 'linear-gradient(to right, transparent, rgba(245,158,11,0.3), transparent)' }}
               />
 
-              {/* Stars + quote icon */}
               <div className="flex items-center justify-between">
                 <div className="flex gap-0.5">
                   {Array.from({ length: 5 }).map((_, i) => (
@@ -136,10 +143,7 @@ export default function Reviews() {
               <div className="flex items-center gap-3 pt-4 border-t border-white/[0.06]">
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center font-display text-sm text-brand-amber flex-shrink-0"
-                  style={{
-                    background: 'rgba(245,158,11,0.1)',
-                    border: '1px solid rgba(245,158,11,0.2)',
-                  }}
+                  style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)' }}
                 >
                   {initials}
                 </div>

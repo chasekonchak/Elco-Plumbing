@@ -17,7 +17,6 @@ const serviceAreas = [
 export default function Footer() {
   return (
     <footer className="relative bg-brand-bg border-t border-white/[0.06] pt-20 pb-10 overflow-hidden">
-      {/* Ambient */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute bottom-0 left-1/3 w-[600px] h-[200px] rounded-full bg-brand-amber/[0.04] blur-[100px]" />
       </div>
@@ -34,8 +33,8 @@ export default function Footer() {
               </div>
             </div>
 
-            <p className="text-brand-muted text-sm leading-relaxed max-w-[220px] font-body mb-6">
-              If water runs through it, we do it. Serving Marietta and Cobb County for over 15 years.
+            <p className="text-brand-muted text-sm leading-relaxed max-w-[230px] font-body mb-6">
+              Family-owned and operated, serving Marietta and metro Atlanta since 2009. When your pipes have a problem, we have the answer.
             </p>
 
             <div className="flex flex-col gap-2">
@@ -68,10 +67,7 @@ export default function Footer() {
                     className="group inline-flex items-center gap-1 text-brand-muted text-sm font-body hover:text-brand-white transition-colors duration-200"
                   >
                     {s}
-                    <ArrowUpRight
-                      size={11}
-                      className="opacity-0 group-hover:opacity-60 transition-opacity"
-                    />
+                    <ArrowUpRight size={11} className="opacity-0 group-hover:opacity-60 transition-opacity" />
                   </a>
                 </li>
               ))}
@@ -81,7 +77,7 @@ export default function Footer() {
           {/* Col 3 */}
           <div>
             <p className="text-[9px] tracking-[0.35em] uppercase text-brand-muted font-semibold font-body mb-5">
-              Service Areas
+              We Serve
             </p>
             <div className="grid grid-cols-2 gap-y-2.5 gap-x-4">
               {serviceAreas.map((area) => (
@@ -90,19 +86,20 @@ export default function Footer() {
                 </span>
               ))}
             </div>
+            <p className="text-brand-muted text-xs font-body mt-5 leading-relaxed">
+              And everywhere in between — if you&apos;re within 50 miles of Marietta, we come to you.
+            </p>
           </div>
         </div>
 
-        {/* Divider */}
         <div
           className="h-px mb-8"
           style={{ background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent)' }}
         />
 
-        {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row justify-between gap-4 text-xs text-brand-muted font-body">
           <span>© 2025 ELCO Plumbing. All rights reserved.</span>
-          <span>Licensed &amp; Insured in Georgia · ROC #XXXXXXX</span>
+          <span>Licensed &amp; Insured in Georgia · Serving Metro Atlanta Since 2009</span>
         </div>
       </div>
     </footer>

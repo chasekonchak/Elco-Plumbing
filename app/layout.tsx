@@ -1,0 +1,36 @@
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+
+export const metadata: Metadata = {
+  title: 'ELCO Plumbing | Licensed Plumbers in Marietta, GA',
+  description:
+    'Licensed, bonded, and insured plumbers serving Marietta, GA and Cobb County. Emergency repairs, drain cleaning, water heater installation & more. Call (678) 772-1218.',
+  keywords:
+    'plumber Marietta GA, emergency plumber Cobb County, drain cleaning, water heater repair, sewer line repair, plumbing services Georgia',
+  openGraph: {
+    title: 'ELCO Plumbing | Licensed Plumbers in Marietta, GA',
+    description:
+      'Licensed, bonded, and insured plumbers for emergency repairs, drain cleaning, and water restoration. Same-day service available.',
+    type: 'website',
+    locale: 'en_US',
+  },
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en" className={`${inter.variable} scroll-smooth`}>
+      <body className="font-sans antialiased">{children}</body>
+    </html>
+  )
+}

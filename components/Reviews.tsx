@@ -1,109 +1,111 @@
 'use client'
 
+import { useRef } from 'react'
 import { motion } from 'framer-motion'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const reviews = [
   {
-    quote:
-      "ELCO saved the day when our pipe burst on a Sunday morning. They arrived within the hour and had everything fixed before lunch. Incredibly professional and fair pricing — I won't call anyone else.",
+    initials: 'JH',
     name: 'Jennifer Hollis',
     city: 'Marietta, GA',
-    initials: 'JH',
+    quote:
+      "ELCO had a plumber at my house within two hours. Professional, clear, fixed our burst pipe same afternoon. I wouldn't call anyone else.",
   },
   {
-    quote:
-      "I've used ELCO twice now — once for a water heater replacement and once for a stubborn drain. Both times they were on time, explained everything clearly, and left the area spotless. Highly recommend.",
+    initials: 'MW',
     name: 'Marcus Webb',
     city: 'Kennesaw, GA',
-    initials: 'MW',
+    quote:
+      'Full water heater replacement. Fair quote, spotless work, cleaned up better than they found it. Five stars without hesitation.',
   },
   {
-    quote:
-      "After getting quotes from three companies, ELCO was not only the most affordable but also the most thorough in explaining what needed to be done. They found a leak two other plumbers missed. Outstanding.",
+    initials: 'DT',
     name: 'Denise Trammell',
     city: 'Smyrna, GA',
-    initials: 'DT',
+    quote:
+      'Main drain backed up Sunday evening. ELCO picked up immediately, someone out within the hour. Transparent pricing, done right the first time.',
   },
 ]
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.18 },
-  },
-}
-
-const cardVariants = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: 'easeOut' } },
-}
-
 export default function Reviews() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const headingRef = useRef<HTMLHeadingElement>(null)
+
+  useGSAP(
+    () => {
+      if (headingRef.current) {
+        gsap.fromTo(
+          headingRef.current,
+          { clipPath: 'inset(0 100% 0 0)' },
+          {
+            clipPath: 'inset(0 0% 0 0)',
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: headingRef.current,
+              start: 'top 85%',
+              once: true,
+            },
+          }
+        )
+      }
+    },
+    { scope: sectionRef }
+  )
+
   return (
-    <section id="reviews" className="bg-brand-gray py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center max-w-xl mx-auto">
-          <motion.h2
-            className="text-4xl font-bold text-brand-navy"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.6 }}
+    <section id="reviews" ref={sectionRef} className="bg-brand-bg py-16 lg:py-28">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <p className="text-[11px] tracking-[0.4em] uppercase text-brand-amber font-semibold font-body mb-4">
+            Testimonials
+          </p>
+          <h2
+            ref={headingRef}
+            className="font-display text-brand-white inline-block"
+            style={{ fontSize: 'clamp(3rem, 6vw, 5rem)' }}
           >
-            What Our Customers Say
-          </motion.h2>
-          <motion.p
-            className="text-brand-text-muted mt-3"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-          >
-            Hundreds of happy homeowners across Cobb County trust ELCO for all their
-            plumbing needs.
-          </motion.p>
+            WHAT PEOPLE SAY
+          </h2>
         </div>
 
-        {/* Cards */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        >
-          {reviews.map(({ quote, name, city, initials }) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-brand-border">
+          {reviews.map(({ initials, name, city, quote }) => (
             <motion.div
               key={name}
-              variants={cardVariants}
-              whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(0,0,0,0.1)' }}
-              className="bg-white rounded-2xl p-8 shadow-sm cursor-default"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+              className="bg-brand-bg p-8 flex flex-col gap-6 cursor-default"
             >
               <div className="flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <span key={i} className="text-yellow-400 text-xl">
+                  <span key={i} className="text-brand-amber text-lg">
                     &#9733;
                   </span>
                 ))}
               </div>
 
-              <p className="italic text-gray-600 mt-4 text-sm leading-relaxed">
+              <p className="text-brand-slate text-sm leading-relaxed italic font-body">
                 &ldquo;{quote}&rdquo;
               </p>
 
-              <div className="border-t border-gray-100 mt-6 pt-5 flex items-center gap-3">
-                <div className="bg-brand-red/10 text-brand-red font-bold w-10 h-10 rounded-full flex items-center justify-center text-sm flex-shrink-0">
+              <div className="border-t border-brand-border pt-5 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-sm bg-brand-card border border-brand-border flex items-center justify-center font-display text-sm text-brand-amber flex-shrink-0">
                   {initials}
                 </div>
                 <div>
-                  <p className="font-bold text-brand-navy text-sm">{name}</p>
-                  <p className="text-gray-400 text-xs">{city}</p>
+                  <p className="text-brand-white text-sm font-semibold font-body">{name}</p>
+                  <p className="text-brand-muted text-xs font-body">{city}</p>
                 </div>
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )

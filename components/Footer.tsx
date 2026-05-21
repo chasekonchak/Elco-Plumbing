@@ -1,11 +1,12 @@
 import { Wrench, Phone, MapPin } from 'lucide-react'
 
-const quickLinks = [
-  { label: 'Services', href: '#services' },
-  { label: 'Service Areas', href: '#service-areas' },
-  { label: 'Reviews', href: '#reviews' },
-  { label: 'FAQ', href: '#faq' },
-  { label: 'Free Quote', href: '#quote' },
+const serviceLinks = [
+  'Emergency Plumbing',
+  'Drain Cleaning',
+  'Water Heater',
+  'Sewer Line Repair',
+  'Water Restoration',
+  'Leak Detection',
 ]
 
 const serviceAreas = [
@@ -21,44 +22,67 @@ const serviceAreas = [
 
 export default function Footer() {
   return (
-    <footer className="bg-brand-navy border-t border-white/10 pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+    <footer className="bg-brand-bg border-t border-brand-border pt-20 pb-10">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mb-16">
           {/* Col 1 */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <Wrench className="w-5 h-5 text-brand-red" strokeWidth={2.5} />
-              <span className="text-white font-bold text-lg">ELCO Plumbing</span>
+            <div className="flex items-start gap-2">
+              <Wrench
+                size={18}
+                className="text-brand-amber mt-1 flex-shrink-0"
+                strokeWidth={2}
+              />
+              <div className="flex flex-col leading-none">
+                <span className="font-display text-2xl text-brand-white tracking-widest">
+                  ELCO
+                </span>
+                <span className="text-[10px] font-semibold tracking-[0.3em] text-brand-amber uppercase font-body">
+                  PLUMBING
+                </span>
+              </div>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-              If Water Runs Through It, We Do It. Serving Marietta, GA and the surrounding
-              Cobb County area with professional plumbing services.
+
+            <p className="text-brand-muted text-sm mt-4 leading-relaxed max-w-xs font-body">
+              If water runs through it, we do it. Serving Marietta and Cobb
+              County for over 15 years.
             </p>
-            <div className="mt-4 flex items-center gap-2 text-gray-400 text-sm">
-              <Phone className="w-4 h-4 flex-shrink-0" />
-              <a href="tel:6787721218" className="hover:text-white transition-colors">
+
+            <div className="mt-6 flex items-center gap-2">
+              <Phone size={14} className="text-brand-amber flex-shrink-0" strokeWidth={2} />
+              <a
+                href="tel:6787721218"
+                className="text-brand-amber font-semibold text-sm font-body hover:text-brand-amber-light transition-colors"
+              >
                 (678) 772-1218
               </a>
             </div>
-            <div className="mt-2 flex items-start gap-2 text-gray-400 text-sm">
-              <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" />
-              <span>2520 Ruger Dr NE, Marietta, GA 30066</span>
+
+            <div className="mt-1 flex items-start gap-2">
+              <MapPin
+                size={14}
+                className="text-brand-muted flex-shrink-0 mt-0.5"
+                strokeWidth={1.75}
+              />
+              <p className="text-brand-muted text-xs font-body">
+                2520 Ruger Dr NE, Marietta, GA 30066
+              </p>
             </div>
           </div>
 
           {/* Col 2 */}
           <div>
-            <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">
-              Quick Links
-            </h3>
-            <ul className="flex flex-col gap-2">
-              {quickLinks.map(({ label, href }) => (
-                <li key={label}>
+            <p className="text-[10px] tracking-[0.3em] uppercase text-brand-muted font-semibold font-body mb-5">
+              Services
+            </p>
+            <ul className="flex flex-col gap-2.5">
+              {serviceLinks.map((s) => (
+                <li key={s}>
                   <a
-                    href={href}
-                    className="text-gray-400 text-sm hover:text-white transition-colors"
+                    href="#services"
+                    className="text-brand-muted text-sm font-body hover:text-brand-white transition-colors duration-150"
                   >
-                    {label}
+                    {s}
                   </a>
                 </li>
               ))}
@@ -67,12 +91,12 @@ export default function Footer() {
 
           {/* Col 3 */}
           <div>
-            <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">
+            <p className="text-[10px] tracking-[0.3em] uppercase text-brand-muted font-semibold font-body mb-5">
               Service Areas
-            </h3>
-            <div className="grid grid-cols-2 gap-1">
+            </p>
+            <div className="grid grid-cols-2 gap-y-2.5 gap-x-4">
               {serviceAreas.map((area) => (
-                <span key={area} className="text-gray-400 text-sm">
+                <span key={area} className="text-brand-muted text-sm font-body">
                   {area}
                 </span>
               ))}
@@ -81,9 +105,9 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between gap-2 text-gray-500 text-sm">
+        <div className="border-t border-brand-border pt-8 flex flex-col sm:flex-row justify-between gap-4 text-xs text-brand-muted font-body">
           <span>© 2025 ELCO Plumbing. All rights reserved.</span>
-          <span>Licensed &amp; Insured in Georgia</span>
+          <span>Licensed &amp; Insured in Georgia · ROC #XXXXXXX</span>
         </div>
       </div>
     </footer>

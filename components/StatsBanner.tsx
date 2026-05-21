@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import { motion } from 'framer-motion'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -10,9 +11,14 @@ gsap.registerPlugin(ScrollTrigger)
 const stats = [
   { value: 15, suffix: '+', label: 'YEARS EXPERIENCE' },
   { value: 247, suffix: '+', label: 'FIVE-STAR REVIEWS' },
-  { value: 50, suffix: ' mi', label: 'SERVICE RADIUS' },
+  { value: 50, suffix: 'mi', label: 'SERVICE RADIUS' },
   { value: 24, suffix: '/7', label: 'EMERGENCY SERVICE' },
 ]
+
+const numberVariants = {
+  rest: { color: '#0F1117' },
+  hovered: { color: '#FCD34D' },
+}
 
 export default function StatsBanner() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -46,12 +52,22 @@ export default function StatsBanner() {
   )
 
   return (
-    <section ref={sectionRef} className="bg-brand-red py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+    <section ref={sectionRef} className="bg-brand-amber py-20">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4">
           {stats.map(({ value, suffix, label }, i) => (
-            <div key={label} className="flex flex-col items-center gap-2">
-              <p className="text-6xl font-black text-white tracking-tight leading-none">
+            <motion.div
+              key={label}
+              initial="rest"
+              whileHover="hovered"
+              className="border-r border-brand-amber-dark last:border-r-0 px-8 text-center py-4 cursor-default"
+            >
+              <motion.p
+                variants={numberVariants}
+                transition={{ duration: 0.15 }}
+                className="font-display leading-none"
+                style={{ fontSize: '5rem', color: '#0F1117' }}
+              >
                 <span
                   ref={(el) => {
                     countersRef.current[i] = el
@@ -60,11 +76,12 @@ export default function StatsBanner() {
                   0
                 </span>
                 {suffix}
-              </p>
-              <p className="text-white/80 text-sm font-semibold tracking-wider uppercase">
+              </motion.p>
+              <p className="text-xs tracking-[0.3em] uppercase mt-2 font-semibold font-body"
+                 style={{ color: 'rgba(15,17,23,0.7)' }}>
                 {label}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

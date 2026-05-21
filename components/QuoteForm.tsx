@@ -1,27 +1,23 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Phone, CheckCircle } from 'lucide-react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { Check } from 'lucide-react'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const services = [
-  'Emergency Plumbing Repair',
+  'Emergency Repair',
   'Drain Cleaning',
-  'Water Heater Installation & Repair',
-  'Sewer Line Repair',
+  'Water Heater',
+  'Sewer Line',
   'Water Restoration',
   'Leak Detection',
   'Other',
 ]
-
-const fieldVariants = {
-  hidden: { opacity: 0, x: 40 },
-  visible: (i: number) => ({
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.45, ease: 'easeOut', delay: i * 0.08 },
-  }),
-}
 
 type FormState = {
   name: string
@@ -29,6 +25,20 @@ type FormState = {
   email: string
   service: string
   message: string
+}
+
+const BORDER_DEFAULT = '#2A3040'
+const BORDER_FOCUS = '#F59E0B'
+
+const inputBase =
+  'bg-brand-bg text-brand-white placeholder:text-brand-muted px-4 py-3 rounded-sm w-full text-sm font-body outline-none'
+
+function FieldLabel({ children }: { children: string }) {
+  return (
+    <p className="text-xs tracking-widest uppercase text-brand-muted mb-2 font-body font-semibold">
+      {children}
+    </p>
+  )
 }
 
 export default function QuoteForm() {
@@ -41,6 +51,31 @@ export default function QuoteForm() {
   })
   const [submitted, setSubmitted] = useState(false)
 
+  const sectionRef = useRef<HTMLElement>(null)
+  const headingRef = useRef<HTMLHeadingElement>(null)
+
+  useGSAP(
+    () => {
+      if (headingRef.current) {
+        gsap.fromTo(
+          headingRef.current,
+          { clipPath: 'inset(0 100% 0 0)' },
+          {
+            clipPath: 'inset(0 0% 0 0)',
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: headingRef.current,
+              start: 'top 85%',
+              once: true,
+            },
+          }
+        )
+      }
+    },
+    { scope: sectionRef }
+  )
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -52,95 +87,70 @@ export default function QuoteForm() {
     setSubmitted(true)
   }
 
-  const inputClass =
-    'w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/20 transition-all duration-200 bg-gray-50 focus:bg-white'
-
   return (
-    <section id="quote" className="bg-brand-navy py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
+    <section
+      id="quote"
+      ref={sectionRef}
+      className="bg-brand-surface border-t border-brand-border py-16 lg:py-28"
+    >
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           {/* Left */}
           <div>
-            <motion.h2
-              className="text-4xl font-bold text-white leading-tight"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.6 }}
+            <p className="text-[11px] tracking-[0.4em] uppercase text-brand-amber font-semibold font-body mb-4">
+              Free Quote
+            </p>
+            <h2
+              ref={headingRef}
+              className="font-display text-brand-white"
+              style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}
             >
-              Request a Free Plumbing Quote
-            </motion.h2>
-            <motion.p
-              className="text-gray-400 mt-4 text-base leading-relaxed max-w-md"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-            >
-              Describe your plumbing issue and we&apos;ll get back to you within minutes.
-              No obligation, no spam — just fast, honest help.
-            </motion.p>
+              GET A FREE QUOTE
+            </h2>
+            <p className="text-brand-slate mt-4 max-w-sm text-base font-body leading-relaxed">
+              Describe your issue. We respond within minutes — no spam, no
+              obligation.
+            </p>
 
-            <motion.a
-              href="tel:6787721218"
-              className="mt-8 inline-flex items-center gap-3 bg-brand-red text-white font-bold px-8 py-4 rounded-xl text-lg select-none"
-              whileHover={{ scale: 1.04, filter: 'brightness(1.1)' }}
-              whileTap={{ scale: 0.97 }}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              <Phone className="w-5 h-5" />
-              (678) 772-1218
-            </motion.a>
+            <div className="mt-8 flex flex-col gap-3">
+              {['→ No spam, ever', '→ Response within minutes', '→ Free, no obligation'].map(
+                (item) => (
+                  <p key={item} className="text-sm text-brand-slate font-body">
+                    {item}
+                  </p>
+                )
+              )}
+            </div>
 
-            <motion.div
-              className="mt-6 flex flex-col gap-2 text-sm text-gray-400"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.45 }}
-            >
-              <span>✓ No spam</span>
-              <span>✓ Respond within minutes</span>
-              <span>✓ Free, no obligation</span>
-            </motion.div>
+            <p className="font-display text-brand-amber mt-10" style={{ fontSize: '2rem' }}>
+              678.772.1218
+            </p>
+            <p className="text-xs text-brand-muted font-body mt-1">or call us directly</p>
           </div>
 
           {/* Right — form card */}
           <motion.div
-            className="bg-white rounded-3xl p-10 shadow-2xl"
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.65, ease: 'easeOut' }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="bg-brand-card border border-brand-border p-10"
           >
             <AnimatePresence mode="wait">
               {submitted ? (
                 <motion.div
                   key="success"
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.85 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="flex flex-col items-center justify-center py-12 text-center gap-4"
+                  transition={{ duration: 0.4, type: 'spring', stiffness: 260, damping: 20 }}
+                  className="flex flex-col items-center justify-center py-12 gap-4 text-center"
                 >
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.1 }}
-                  >
-                    <CheckCircle className="w-16 h-16 text-green-500" strokeWidth={1.5} />
-                  </motion.div>
-                  <h3 className="text-2xl font-bold text-brand-navy">Request Received!</h3>
-                  <p className="text-brand-text-muted text-sm max-w-xs">
-                    We&apos;ll review your info and reach out within minutes. For urgent
-                    issues, call{' '}
-                    <a href="tel:6787721218" className="text-brand-red font-semibold">
-                      (678) 772-1218
-                    </a>
-                    .
+                  <Check size={48} className="text-brand-amber" strokeWidth={1.5} />
+                  <h3 className="font-display text-3xl text-brand-white">
+                    REQUEST RECEIVED
+                  </h3>
+                  <p className="text-brand-slate font-body text-sm">
+                    {"We'll call you within minutes."}
                   </p>
                 </motion.div>
               ) : (
@@ -148,50 +158,90 @@ export default function QuoteForm() {
                   key="form"
                   initial={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="flex flex-col gap-4"
+                  className="flex flex-col gap-5"
                 >
-                  {[
-                    { label: 'Full Name', name: 'name', type: 'text', placeholder: 'Jane Smith' },
-                    { label: 'Phone Number', name: 'phone', type: 'tel', placeholder: '(678) 555-1234' },
-                    { label: 'Email Address', name: 'email', type: 'email', placeholder: 'jane@example.com' },
-                  ].map(({ label, name, type, placeholder }, i) => (
-                    <motion.div
-                      key={name}
-                      custom={i}
-                      variants={fieldVariants}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
-                    >
-                      <label className="block text-sm font-semibold text-brand-navy mb-1.5">
-                        {label}
-                      </label>
-                      <input
-                        type={type}
-                        name={name}
-                        placeholder={placeholder}
-                        value={form[name as keyof FormState]}
-                        onChange={handleChange}
-                        className={inputClass}
-                      />
-                    </motion.div>
-                  ))}
-
+                  {/* Name */}
                   <motion.div
-                    custom={3}
-                    variants={fieldVariants}
-                    initial="hidden"
-                    whileInView="visible"
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.05 }}
                   >
-                    <label className="block text-sm font-semibold text-brand-navy mb-1.5">
-                      Service Needed
-                    </label>
-                    <select
+                    <FieldLabel>Name</FieldLabel>
+                    <motion.input
+                      type="text"
+                      name="name"
+                      placeholder="Jane Smith"
+                      value={form.name}
+                      onChange={handleChange}
+                      className={inputBase}
+                      style={{ border: `1px solid ${BORDER_DEFAULT}` }}
+                      whileFocus={{ borderColor: BORDER_FOCUS }}
+                      transition={{ duration: 0.15 }}
+                    />
+                  </motion.div>
+
+                  {/* Phone */}
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.1 }}
+                  >
+                    <FieldLabel>Phone</FieldLabel>
+                    <motion.input
+                      type="tel"
+                      name="phone"
+                      placeholder="(678) 555-1234"
+                      value={form.phone}
+                      onChange={handleChange}
+                      className={inputBase}
+                      style={{ border: `1px solid ${BORDER_DEFAULT}` }}
+                      whileFocus={{ borderColor: BORDER_FOCUS }}
+                      transition={{ duration: 0.15 }}
+                    />
+                  </motion.div>
+
+                  {/* Email */}
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.15 }}
+                  >
+                    <FieldLabel>Email</FieldLabel>
+                    <motion.input
+                      type="email"
+                      name="email"
+                      placeholder="jane@example.com"
+                      value={form.email}
+                      onChange={handleChange}
+                      className={inputBase}
+                      style={{ border: `1px solid ${BORDER_DEFAULT}` }}
+                      whileFocus={{ borderColor: BORDER_FOCUS }}
+                      transition={{ duration: 0.15 }}
+                    />
+                  </motion.div>
+
+                  {/* Service */}
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.2 }}
+                  >
+                    <FieldLabel>Service Needed</FieldLabel>
+                    <motion.select
                       name="service"
                       value={form.service}
                       onChange={handleChange}
-                      className={inputClass}
+                      className={`${inputBase} cursor-pointer`}
+                      style={{
+                        border: `1px solid ${BORDER_DEFAULT}`,
+                        backgroundColor: '#0F1117',
+                      }}
+                      whileFocus={{ borderColor: BORDER_FOCUS }}
+                      transition={{ duration: 0.15 }}
                     >
                       <option value="">Select a service…</option>
                       {services.map((s) => (
@@ -199,45 +249,39 @@ export default function QuoteForm() {
                           {s}
                         </option>
                       ))}
-                    </select>
+                    </motion.select>
                   </motion.div>
 
+                  {/* Message */}
                   <motion.div
-                    custom={4}
-                    variants={fieldVariants}
-                    initial="hidden"
-                    whileInView="visible"
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.25 }}
                   >
-                    <label className="block text-sm font-semibold text-brand-navy mb-1.5">
-                      Message
-                    </label>
-                    <textarea
+                    <FieldLabel>Message</FieldLabel>
+                    <motion.textarea
                       name="message"
                       rows={4}
                       placeholder="Describe your plumbing issue…"
                       value={form.message}
                       onChange={handleChange}
-                      className={`${inputClass} resize-none`}
+                      className={`${inputBase} resize-none`}
+                      style={{ border: `1px solid ${BORDER_DEFAULT}` }}
+                      whileFocus={{ borderColor: BORDER_FOCUS }}
+                      transition={{ duration: 0.15 }}
                     />
                   </motion.div>
 
-                  <motion.div
-                    custom={5}
-                    variants={fieldVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
+                  {/* Submit */}
+                  <motion.button
+                    onClick={handleSubmit}
+                    className="bg-brand-amber text-brand-bg font-bold w-full py-4 rounded-sm tracking-wider text-sm mt-1 font-body select-none"
+                    whileHover={{ scale: 1.02, filter: 'brightness(1.1)' }}
+                    whileTap={{ scale: 0.97 }}
                   >
-                    <motion.button
-                      onClick={handleSubmit}
-                      className="w-full bg-brand-red text-white py-4 rounded-xl font-bold text-lg select-none mt-1"
-                      whileHover={{ scale: 1.02, filter: 'brightness(1.08)' }}
-                      whileTap={{ scale: 0.97 }}
-                    >
-                      Get My Free Quote
-                    </motion.button>
-                  </motion.div>
+                    SEND REQUEST →
+                  </motion.button>
                 </motion.div>
               )}
             </AnimatePresence>

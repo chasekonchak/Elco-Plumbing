@@ -1,3 +1,4 @@
+import PageWrapper from '@/components/PageWrapper'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import TrustBar from '@/components/TrustBar'
@@ -10,7 +11,7 @@ import Footer from '@/components/Footer'
 
 export default function Home() {
   return (
-    <main>
+    <PageWrapper>
       <Navbar />
       <Hero />
       <TrustBar />
@@ -20,6 +21,6 @@ export default function Home() {
       <Reviews />
       <QuoteForm />
       <Footer />
-    </main>
+    </PageWrapper>
   )
 }

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Wrench, Menu, X, Phone } from 'lucide-react'
+import { Wrench, Phone, Menu, X } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -16,73 +16,102 @@ const navLinks = [
   { label: 'FAQ', href: '#faq' },
 ]
 
+const underlineVariants = {
+  rest: { scaleX: 0 },
+  hovered: { scaleX: 1 },
+}
+
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const navRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {
-    gsap.to(navRef.current, {
-      paddingTop: '0.5rem',
-      paddingBottom: '0.5rem',
-      boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)',
-      scrollTrigger: {
-        trigger: document.body,
-        start: 'top+=50 top',
-        end: 'top+=51 top',
-        toggleActions: 'play none none reverse',
-      },
+    ScrollTrigger.create({
+      start: '80px top',
+      onEnter: () =>
+        gsap.to(navRef.current, {
+          backgroundColor: 'rgba(15,17,23,0.98)',
+          duration: 0.3,
+          ease: 'power2.out',
+        }),
+      onLeaveBack: () =>
+        gsap.to(navRef.current, {
+          backgroundColor: 'rgba(15,17,23,0.95)',
+          duration: 0.3,
+          ease: 'power2.out',
+        }),
     })
   }, [])
 
   return (
     <nav
       ref={navRef}
-      className="fixed top-0 left-0 right-0 z-50 bg-white py-4 transition-colors"
+      className="fixed top-0 left-0 right-0 z-50 border-b border-brand-border backdrop-blur-sm"
+      style={{ backgroundColor: 'rgba(15,17,23,0.95)' }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <a href="/" className="flex items-center gap-2">
-            <Wrench className="w-6 h-6 text-brand-red" strokeWidth={2.5} />
-            <span className="text-brand-navy font-bold text-xl tracking-tight">
-              ELCO Plumbing
+      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        {/* Logo */}
+        <a href="/" className="flex items-start gap-2 select-none">
+          <Wrench size={18} className="text-brand-amber mt-1 flex-shrink-0" strokeWidth={2} />
+          <div className="flex flex-col leading-none">
+            <span className="font-display text-2xl text-brand-white tracking-widest">
+              ELCO
             </span>
-          </a>
-
-          {/* Desktop nav links */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="text-sm text-gray-600 hover:text-brand-red transition-colors duration-200 font-medium"
-              >
-                {link.label}
-              </a>
-            ))}
+            <span className="text-[10px] font-semibold tracking-[0.3em] text-brand-amber uppercase">
+              PLUMBING
+            </span>
           </div>
+        </a>
 
-          {/* CTA + Mobile Toggle */}
-          <div className="flex items-center gap-3">
+        {/* Center links */}
+        <div className="hidden lg:flex items-center gap-10">
+          {navLinks.map(({ label, href }) => (
             <motion.a
-              href="tel:6787721218"
-              className="bg-brand-red text-white rounded-full px-5 py-2 text-sm font-semibold flex items-center gap-2 select-none"
-              whileHover={{ scale: 1.05, filter: 'brightness(1.1)' }}
-              whileTap={{ scale: 0.97 }}
+              key={label}
+              href={href}
+              initial="rest"
+              whileHover="hovered"
+              className="relative flex flex-col items-start font-body text-sm font-medium text-brand-slate hover:text-brand-white transition-colors duration-150 pb-1"
             >
-              <Phone className="w-3.5 h-3.5" />
-              (678) 772-1218
+              {label}
+              <motion.span
+                variants={underlineVariants}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+                className="absolute bottom-0 left-0 right-0 h-px bg-brand-amber"
+                style={{ originX: 0 }}
+              />
             </motion.a>
+          ))}
+        </div>
 
-            <motion.button
-              className="md:hidden p-2 text-brand-navy"
-              onClick={() => setMobileOpen((v) => !v)}
-              whileTap={{ scale: 0.9 }}
-              aria-label="Toggle menu"
-            >
-              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </motion.button>
+        {/* Right side */}
+        <div className="flex items-center gap-5">
+          {/* Availability badge — desktop */}
+          <div className="hidden sm:flex items-center gap-2">
+            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+            <span className="text-xs text-brand-slate font-medium">Available Now</span>
           </div>
+
+          {/* CTA */}
+          <motion.a
+            href="tel:6787721218"
+            className="flex items-center gap-1.5 bg-brand-amber text-brand-bg font-bold text-sm px-5 py-2 rounded-sm select-none"
+            whileHover={{ scale: 1.03, filter: 'brightness(1.1)' }}
+            whileTap={{ scale: 0.97 }}
+          >
+            <Phone size={14} strokeWidth={2.5} />
+            (678) 772-1218
+          </motion.a>
+
+          {/* Mobile hamburger */}
+          <motion.button
+            className="lg:hidden text-brand-white p-1"
+            onClick={() => setMobileOpen((v) => !v)}
+            whileTap={{ scale: 0.9 }}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+          </motion.button>
         </div>
       </div>
 
@@ -94,25 +123,25 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="md:hidden overflow-hidden bg-white border-t border-gray-100"
+            className="lg:hidden overflow-hidden bg-brand-surface border-t border-brand-border"
           >
-            <div className="px-4 py-4 flex flex-col gap-4">
-              {navLinks.map((link) => (
+            <div className="flex flex-col px-6 py-4 gap-1">
+              {navLinks.map(({ label, href }) => (
                 <a
-                  key={link.label}
-                  href={link.href}
+                  key={label}
+                  href={href}
                   onClick={() => setMobileOpen(false)}
-                  className="text-base text-gray-700 hover:text-brand-red font-medium transition-colors"
+                  className="py-4 text-brand-slate hover:text-brand-white text-sm font-medium border-b border-brand-border last:border-b-0 transition-colors"
                 >
-                  {link.label}
+                  {label}
                 </a>
               ))}
               <a
                 href="tel:6787721218"
-                className="bg-brand-red text-white rounded-full px-5 py-3 text-sm font-semibold text-center"
                 onClick={() => setMobileOpen(false)}
+                className="mt-4 w-full bg-brand-amber text-brand-bg font-bold text-sm py-3 rounded-sm text-center tracking-wider"
               >
-                Call (678) 772-1218
+                CALL (678) 772-1218
               </a>
             </div>
           </motion.div>

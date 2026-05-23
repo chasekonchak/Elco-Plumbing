@@ -1,7 +1,6 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion } from 'framer-motion'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -9,8 +8,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 const stats = [
-  { value: 15, suffix: '+', label: 'Years Fixing ATL Pipes' },
-  { value: 247, suffix: '+', label: 'Happy Families' },
+  { value: 15, suffix: '+', label: 'Years in Metro Atlanta' },
+  { value: 247, suffix: '+', label: 'Five-Star Reviews' },
   { value: 50, suffix: 'mi', label: 'Miles Around Marietta' },
   { value: 24, suffix: '/7', label: 'Always Answering' },
 ]
@@ -46,42 +45,22 @@ export default function StatsBanner() {
   )
 
   return (
-    <section ref={sectionRef} className="relative bg-brand-bg overflow-hidden py-20">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[300px] rounded-full bg-brand-amber/[0.07] blur-[100px]" />
-        <div className="absolute inset-0 dot-grid opacity-20" />
-      </div>
-
-      <div className="relative max-w-7xl mx-auto px-6">
-        <p className="text-center text-[10px] tracking-[0.4em] uppercase text-brand-amber font-body font-semibold mb-12">
-          15 Years in Metro Atlanta
-        </p>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {stats.map(({ value, suffix, label }, i) => (
-            <motion.div
+    <section ref={sectionRef} className="bg-[#111D2B] py-16 lg:py-20">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#1E2F40]">
+          {stats.map(({ suffix, label }, i) => (
+            <div
               key={label}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: 'easeOut' }}
-              whileHover={{
-                boxShadow: '0 0 0 1px rgba(245,158,11,0.3), 0 0 40px rgba(245,158,11,0.12)',
-              }}
-              className="glass rounded-2xl px-8 py-10 text-center cursor-default relative overflow-hidden"
+              className="bg-[#111D2B] px-8 py-10 text-center"
             >
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-24 h-24 rounded-full bg-brand-amber/[0.12] blur-[40px]" />
-              </div>
-
-              <p className="relative font-display leading-none text-brand-amber" style={{ fontSize: '4.5rem' }}>
+              <p className="font-display font-black text-[#B5311A] leading-none" style={{ fontSize: '3.5rem' }}>
                 <span ref={(el) => { countersRef.current[i] = el }}>0</span>
                 {suffix}
               </p>
-              <p className="relative text-xs tracking-[0.2em] uppercase text-brand-muted mt-3 font-body font-semibold">
+              <p className="font-body text-[11px] tracking-[0.2em] uppercase text-[#7A8A9A] mt-3 font-medium">
                 {label}
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

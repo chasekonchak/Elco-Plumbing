@@ -1,25 +1,29 @@
 import PageWrapper from '@/components/PageWrapper'
+import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
-import TrustBar from '@/components/TrustBar'
 import StatsBanner from '@/components/StatsBanner'
+import TrustStatement from '@/components/TrustStatement'
 import Services from '@/components/Services'
-import WhyUs from '@/components/WhyUs'
 import Reviews from '@/components/Reviews'
-import QuoteForm from '@/components/QuoteForm'
+import ServiceAreas from '@/components/ServiceAreas'
+import FAQ from '@/components/FAQ'
+import FinalCTA from '@/components/FinalCTA'
 import Footer from '@/components/Footer'
 
 export default function Home() {
   return (
     <PageWrapper>
+      <AnnouncementBar />
       <Navbar />
       <Hero />
-      <TrustBar />
       <StatsBanner />
+      <TrustStatement />
       <Services />
-      <WhyUs />
       <Reviews />
-      <QuoteForm />
+      <ServiceAreas />
+      <FAQ />
+      <FinalCTA />
       <Footer />
     </PageWrapper>
   )

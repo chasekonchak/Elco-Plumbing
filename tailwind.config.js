@@ -9,21 +9,17 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          bg: '#070810',
-          surface: '#0C0D18',
-          card: '#10121F',
-          border: '#1A1E30',
-          amber: '#F59E0B',
-          'amber-light': '#FCD34D',
-          'amber-dark': '#D97706',
-          slate: '#8B9FC7',
-          muted: '#3D4B66',
-          white: '#EEF2FF',
+          bg: '#F5F1EC',
+          navy: '#1B2A3B',
+          deep: '#111D2B',
+          red: '#B5311A',
+          gray: '#7A7165',
+          white: '#FFFFFF',
         },
       },
       fontFamily: {
-        display: ['var(--font-display)', 'sans-serif'],
-        body: ['var(--font-body)', 'sans-serif'],
+        display: ['var(--font-display)', 'Georgia', 'serif'],
+        body: ['var(--font-body)', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

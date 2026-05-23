@@ -188,26 +188,26 @@ export default function Services() {
       {/* ── Desktop: pinned horizontal scroll ── */}
       <div
         ref={pinRef}
-        className="hidden lg:block h-screen bg-[#F5F1EC] overflow-hidden"
+        className="hidden lg:flex lg:items-center h-screen bg-[#F5F1EC] overflow-hidden"
       >
         <div
           ref={trackRef}
-          className="flex h-full items-stretch gap-5 pl-6 lg:pl-16 pr-24 py-8 will-change-transform"
+          className="flex items-start gap-5 pl-16 pr-24 will-change-transform"
         >
           {services.map(({ num, title, tag, desc }) => (
             <div
               key={num}
-              className="flex-shrink-0 w-[320px] bg-white rounded-2xl p-8 flex flex-col border border-[#E8E4DE] hover:border-[#B5311A]/30 transition-colors duration-300 group"
+              className="flex-shrink-0 w-[300px] bg-white rounded-2xl p-7 flex flex-col border border-[#E8E4DE] hover:border-[#B5311A]/30 transition-colors duration-300 group"
             >
               {/* Number + tag */}
-              <div className="flex items-start justify-between mb-6">
+              <div className="flex items-start justify-between mb-4">
                 <span
                   className="font-display font-black text-[#B5311A] leading-none"
-                  style={{ fontSize: '3.5rem', opacity: 0.18 }}
+                  style={{ fontSize: '2.5rem', opacity: 0.18 }}
                 >
                   {num}
                 </span>
-                <span className="font-body text-[10px] font-medium tracking-[0.2em] uppercase text-[#B5311A] bg-[#B5311A]/8 px-2.5 py-1 rounded-full border border-[#B5311A]/20 mt-1">
+                <span className="font-body text-[10px] font-medium tracking-[0.18em] uppercase text-[#B5311A] bg-[#B5311A]/8 px-2.5 py-1 rounded-full border border-[#B5311A]/20 mt-1">
                   {tag}
                 </span>
               </div>
@@ -215,18 +215,18 @@ export default function Services() {
               {/* Title */}
               <h3
                 className="font-display font-bold text-[#1B2A3B] leading-snug mb-3"
-                style={{ fontSize: '1.35rem' }}
+                style={{ fontSize: '1.2rem' }}
               >
                 {title}
               </h3>
 
               {/* Description */}
-              <p className="font-body text-[#7A7165] text-sm leading-relaxed flex-1">
+              <p className="font-body text-[#7A7165] text-sm leading-relaxed">
                 {desc}
               </p>
 
               {/* CTA */}
-              <div className="mt-6 pt-5 border-t border-[#E8E4DE]">
+              <div className="mt-5 pt-4 border-t border-[#E8E4DE]">
                 <a
                   href="tel:6787721218"
                   className="inline-flex items-center gap-1.5 font-body text-xs font-medium text-[#B5311A] group-hover:gap-2.5 transition-all duration-200"
@@ -238,7 +238,7 @@ export default function Services() {
           ))}
 
           {/* End card — CTA */}
-          <div className="flex-shrink-0 w-[320px] bg-[#1B2A3B] rounded-2xl p-8 flex flex-col justify-between">
+          <div className="flex-shrink-0 w-[300px] bg-[#1B2A3B] rounded-2xl p-7 flex flex-col justify-between">
             <div>
               <p className="font-body text-[11px] tracking-[0.3em] uppercase text-[#B5311A] font-medium mb-4">
                 All 10 Services
